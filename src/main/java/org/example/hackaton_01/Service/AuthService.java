@@ -4,7 +4,7 @@ import org.example.hackaton_01.DTOS.SignUpRequest;
 import org.example.hackaton_01.DTOS.TokenResponse;
 import org.example.hackaton_01.Model.JwtService;
 import org.example.hackaton_01.account.domain.Account;
-import org.example.hackaton_01.account.infrastructure.AccountRepository;
+import org.example.hackaton_01.account.infrastructure.UserRepository;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,14 +22,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthService {
 
-    private final AccountRepository accountRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final AuthenticationManager authenticationManager;
 
-    public AuthService(AccountRepository accountRepository, PasswordEncoder passwordEncoder,
-                        JwtService jwtService, AuthenticationManager authenticationManager) {
-        this.accountRepository = accountRepository;
+    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder,
+                       JwtService jwtService, AuthenticationManager authenticationManager) {
+        this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.jwtService = jwtService;
         this.authenticationManager = authenticationManager;
@@ -39,7 +39,7 @@ public class AuthService {
      * Registra una nueva cuenta con la contraseña hasheada y devuelve un token válido.
      */
     public TokenResponse signUp(SignUpRequest request) {
-        Account account = accountRepository.save(
+        Account account = userRepository.save(
                 new Account(
                         request.getEmail(),
                         passwordEncoder.encode(request.getPassword()),
@@ -59,7 +59,7 @@ public class AuthService {
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(username, password)
         );
-        var account = accountRepository.findByEmail(username).orElseThrow();
+        var account = userRepository.findByEmail(username).orElseThrow();
         var token = jwtService.generateToken(account);
         return new TokenResponse(token);
     }
