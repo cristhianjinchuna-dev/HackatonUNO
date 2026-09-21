@@ -1,11 +1,6 @@
 package org.example.hackaton_01.account.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +16,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Account implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +24,17 @@ public class Account implements UserDetails {
 
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String displayName;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Account(String email, String password, String firstName, String lastName, Role role) {
+    private Instant createdAt;
+
+    public User(String email, String password, String displayName, Role role) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.displayName =  displayName;
         this.role = role;
     }
 
@@ -50,5 +46,10 @@ public class Account implements UserDetails {
     @Override
     public String getUsername() {
         return this.email;
+    }
+
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = Instant.now();
     }
 }
