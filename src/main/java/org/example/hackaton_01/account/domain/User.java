@@ -13,6 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
 
@@ -20,7 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Account implements UserDetails {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,17 +29,17 @@ public class Account implements UserDetails {
 
     private String email;
     private String password;
-    private String firstName;
-    private String lastName;
+    private String displayName;
 
     @Enumerated(EnumType.STRING)
     private Role role;
 
-    public Account(String email, String password, String firstName, String lastName, Role role) {
+    private Instant createdAt;
+
+    public User(String email, String password, String displayName, Role role) {
         this.email = email;
         this.password = password;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.displayName =  displayName;
         this.role = role;
     }
 
