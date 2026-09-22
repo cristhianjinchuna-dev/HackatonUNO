@@ -9,7 +9,7 @@ import org.springframework.transaction.event.TransactionalEventListener;
 @Component
 @RequiredArgsConstructor
 public class DecisionCommittedEventNotifier {
-    private final DecisionService decisionService;
+    private final DecisionService decisionService; // 
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
