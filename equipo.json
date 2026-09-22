@@ -1,0 +1,8 @@
+{
+  "equipo": "G02",
+  "integrantes": [
+    { "nombre": "Eduardo Vila", "codigo": "202520004" },
+    { "nombre": "Mathius Quispe", "codigo": "202520058" },
+    { "nombre": "Cristhian Jinchuña", "codigo": "202520002" }
+  ]
+}
